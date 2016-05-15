@@ -1,0 +1,38 @@
+# Docker for Mezzanine CMS + REST API
+
+# A microservice for the web app.
+web:
+  restart: always
+  build: ./web
+  expose:
+    - "8000"
+  links:
+    - postgres:postgres
+  volumes:
+    - ./web/static:/usr/src/app/static
+    - ./web/static/media:/usr/src/app/static/media
+  env_file: .env
+  command: /start.sh
+
+# A microservice for the web server.
+nginx:
+  restart: always
+  build: ./nginx/
+  ports:
+    - "80:80"
+  volumes:
+    - /www/static
+    - /www/static/media
+  volumes_from:
+    - web
+  links:
+    - web:web
+
+# A microservice for the database.
+postgres:
+  restart: always
+  image: postgres:latest
+  ports:
+    - "5432:5432"
+  volumes:
+    - pgdata:/var/lib/postgresql/data/
