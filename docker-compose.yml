@@ -2,6 +2,7 @@
 
 # A microservice for the web app.
 web:
+  container_name: web
   restart: always
   build: ./web
   expose:
@@ -16,6 +17,7 @@ web:
 
 # A microservice for the web server.
 nginx:
+  container_name: nginx
   restart: always
   build: ./nginx/
   ports:
@@ -30,6 +32,7 @@ nginx:
 
 # A microservice for the database.
 postgres:
+  container_name: postgres
   restart: always
   image: postgres:latest
   ports:
